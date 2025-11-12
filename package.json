@@ -1,0 +1,14 @@
+{
+  "name": "spex-deal-creator",
+  "version": "1.0.0",
+  "description": "HubSpot UI Extension for creating SPEX sponsorship deals",
+  "scripts": {
+    "dev": "hs project dev",
+    "deploy": "hs project deploy",
+    "upload": "hs project upload"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@hubspot/cli": "^6.0.0"
+  }
+}
