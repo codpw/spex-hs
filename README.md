@@ -1,4 +1,4 @@
-# SPEX Deal Creator
+# SPEX HS
 
 HubSpot UI Extension for creating SPEX sponsorship deals with validation.
 
@@ -21,7 +21,7 @@ HubSpot UI Extension for creating SPEX sponsorship deals with validation.
 4. **Configure in HubSpot:**
    - Go to Settings > Integrations > Private Apps
    - Navigate to UI Extensions
-   - Find "spex-deal-creator"
+   - Find "spex-hs"
    - Add to Company record as custom tab
 
 ## Architecture
