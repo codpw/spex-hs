@@ -1,12 +1,8 @@
 {
   "type": "crm-card",
   "data": {
-    "title": "Placeholder",
-    "uid": "dummy_card",
+    "title": "SPEX Deal Creator",
     "location": "crm.record.tab",
-    "module": {
-      "file": "DummyCard.jsx"
-    },
     "objectTypes": [
       {
         "name": "companies"

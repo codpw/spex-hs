@@ -8,5 +8,14 @@
     "crm.objects.deals.write",
     "crm.schemas.deals.read"
   ],
-  "public": false
+  "public": false,
+  "extensions": {
+    "crm": {
+      "cards": [
+        {
+          "file": "cards/SpexDealCreator-hsmeta.json"
+        }
+      ]
+    }
+  }
 }
