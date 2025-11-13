@@ -1,0 +1,23 @@
+name: Deploy to HubSpot
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  DEFAULT_ACCOUNT_ID: ${{ secrets.HUBSPOT_ACCOUNT_ID }}
+  DEFAULT_PERSONAL_ACCESS_KEY: ${{ secrets.HUBSPOT_PERSONAL_ACCESS_KEY }}
+  DEFAULT_CLI_VERSION: "6.4.0"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Upload Project to HubSpot
+        uses: HubSpot/hubspot-project-actions@v1.0.0
+        with:
+          action: project-upload
