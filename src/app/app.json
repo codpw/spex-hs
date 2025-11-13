@@ -10,12 +10,14 @@
   ],
   "public": false,
   "extensions": {
-    "crm": [
-      {
-        "file": "./extensions/SpexDealCreator.jsx",
-        "location": "crm.record.tab",
-        "objectTypes": ["COMPANY"]
-      }
-    ]
+    "crm": {
+      "cards": [
+        {
+          "file": "./extensions/SpexDealCreator.jsx",
+          "location": "crm.record.tab",
+          "objectTypes": ["COMPANY"]
+        }
+      ]
+    }
   }
 }
