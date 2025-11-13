@@ -1,57 +1,48 @@
-# SPEX HS
+# SPEX Deal Creator
 
 HubSpot UI Extension for creating SPEX sponsorship deals with validation.
 
-## Setup
+## Deployment
 
-1. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+Automatically deploys via GitHub Actions on push to main.
 
-2. **Configure environment:**
-   - Add your `HUBSPOT_PERSONAL_ACCESS_KEY` to `.env`
-   - Verify `HUBSPOT_ACCOUNT_ID=26503447`
+**Setup GitHub Secrets:**
+- `HUBSPOT_ACCOUNT_ID`: `26503447`
+- `HUBSPOT_PERSONAL_ACCESS_KEY`: Your PAT
 
-3. **Deploy extension:**
-   ```bash
-   npm run upload
-   ```
-
-4. **Configure in HubSpot:**
-   - Go to Settings > Integrations > Private Apps
-   - Navigate to UI Extensions
-   - Find "spex-hs"
-   - Add to Company record as custom tab
+**Manual Deploy (alternative):**
+```bash
+npm install
+npm run upload
+```
 
 ## Architecture
 
-**Frontend:** React (HubSpot UI Extensions)
+**Frontend:** React (@hubspot/ui-extensions)
 **Backend:** Node.js Serverless Functions
 **Pipelines:**
-- NYC: Pipeline ID `384366810`, Stage ID `593899995`
-- AMS: Pipeline ID `262982359`, Stage ID `433706944`
+- NYC: `384366810` → Stage `593899995`
+- AMS: `262982359` → Stage `433706944`
 
-## File Structure
+## Structure
 
 ```
-src/
-├── app/
-│   ├── extensions/
-│   │   ├── SpexDealCreator.jsx          # Main component
-│   │   └── components/
-│   │       ├── CompanyValidation.jsx     # Validation display
-│   │       ├── DealHistory.jsx           # Previous deals
-│   │       └── DealForm.jsx              # Creation form
-│   └── app.functions/
-│       ├── getCompanyData.js             # Fetch company/contacts/deals
-│       └── createDeal.js                 # Create new deal
-└── utils/
-    ├── constants.js                      # Dropdown values, configs
-    └── validation.js                     # Validation logic
+src/app/
+├── cards/
+│   ├── SpexDealCreator-hsmeta.json      # Card config
+│   ├── SpexDealCreator.jsx              # Main component
+│   ├── package.json                     # Card dependencies
+│   └── components/
+│       ├── CompanyValidation.jsx         # Validation UI
+│       ├── DealHistory.jsx               # Previous deals
+│       └── DealForm.jsx                  # Creation form
+├── app.functions/
+│   ├── getCompanyData.js                 # Fetch data
+│   └── createDeal.js                     # Create deal
+└── app.json                              # App config
 ```
 
-## Validation Rules
+## Validation
 
 **Hard Blocks:**
 - Missing billing address
@@ -64,5 +55,5 @@ src/
 
 ## Deal Naming
 
-Auto-generated: `{Company} - DPW {Location} {Year}`
-Auto-numbered if duplicates exist (`#2`, `#3`, etc.)
+Format: `{Company} - DPW {Location} {Year}`
+Auto-increments: `#2`, `#3` if duplicates exist
