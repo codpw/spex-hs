@@ -29,7 +29,7 @@ exports.main = async (context = {}) => {
     });
 
     // 1. Check for existing deals with similar name (for numbering)
-    const existingDealsResponse = await hubspotClient.crm.deals.searchApi.doSearch({
+    const existingDealsResponse = await hubspotClient.crm.deals.search({
       filterGroups: [
         {
           filters: [
@@ -73,7 +73,7 @@ exports.main = async (context = {}) => {
     if (paymentMethod) dealProperties.payment_method = paymentMethod;
     if (paymentTerm) dealProperties.payment_term = paymentTerm;
 
-    const createResponse = await hubspotClient.crm.deals.basicApi.create({
+    const createResponse = await hubspotClient.crm.deals.create({
       properties: dealProperties,
       associations: [
         {

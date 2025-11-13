@@ -7,7 +7,9 @@
     "deploy": "hs project deploy",
     "upload": "hs project upload"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@hubspot/api-client": "^10.0.0"
+  },
   "devDependencies": {
     "@hubspot/cli": "^6.0.0"
   }

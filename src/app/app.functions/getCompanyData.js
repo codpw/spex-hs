@@ -16,33 +16,22 @@ exports.main = async (context = {}) => {
     });
 
     // 1. Get company data
-    const companyResponse = await hubspotClient.crm.companies.basicApi.getById(
+    const companyResponse = await hubspotClient.crm.companies.getById(
       companyId,
-      [
-        'name',
-        'address',
-        'city',
-        'zip',
-        'country',
-        'vat_ein_number',
-        'exact_account_id',
-        'hubspot_owner_id'
-      ]
+      ['name', 'address', 'city', 'zip', 'country', 'vat_ein_number', 'exact_account_id', 'hubspot_owner_id']
     );
 
     // 2. Get associated contacts
-    const contactsResponse = await hubspotClient.crm.companies.associationsApi.getAll(
+    const contactsResponse = await hubspotClient.crm.companies.associations.getAll(
       companyId,
-      'contacts',
-      undefined,
-      100
+      'contacts'
     );
 
     // Fetch contact details
     const contacts = [];
-    if (contactsResponse.results.length > 0) {
+    if (contactsResponse.results && contactsResponse.results.length > 0) {
       const contactIds = contactsResponse.results.map(c => c.id);
-      const contactDetailResponse = await hubspotClient.crm.contacts.batchApi.read({
+      const contactDetailResponse = await hubspotClient.crm.contacts.batchRead({
         properties: ['firstname', 'lastname', 'email', 'phone', 'jobtitle'],
         inputs: contactIds.map(id => ({ id }))
       });
@@ -50,7 +39,7 @@ exports.main = async (context = {}) => {
     }
 
     // 3. Search for closed-won SPEX deals (from both pipelines)
-    const dealsSearchResponse = await hubspotClient.crm.deals.searchApi.doSearch({
+    const dealsSearchResponse = await hubspotClient.crm.deals.search({
       filterGroups: [
         {
           filters: [
@@ -81,7 +70,7 @@ exports.main = async (context = {}) => {
     });
 
     // 4. Get payment method property options
-    const paymentMethodProperty = await hubspotClient.crm.properties.coreApi.getByName(
+    const paymentMethodProperty = await hubspotClient.crm.properties.getByName(
       'deals',
       'payment_method'
     );
