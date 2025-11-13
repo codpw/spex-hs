@@ -8,15 +8,5 @@
     "crm.objects.deals.write",
     "crm.schemas.deals.read"
   ],
-  "public": false,
-  "extensions": {
-    "crm": {
-      "cards": [
-        {
-          "file": "./extensions/SpexDealCreator.jsx",
-          "uid": "spex-hs-card"
-        }
-      ]
-    }
-  }
+  "public": false
 }
