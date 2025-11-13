@@ -13,7 +13,7 @@
     "crm": {
       "cards": [
         {
-          "file": "./extensions/SpexDealCreator.jsx",
+          "file": "./extensions/SpexDealCreator.js",
           "location": "crm.record.tab",
           "objectTypes": ["COMPANY"]
         }
