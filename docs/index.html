@@ -1,124 +1,293 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPEX Deal Creator</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding: 20px; background: #f5f8fa; }
-        .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        h1 { font-size: 24px; margin-bottom: 10px; color: #33475b; }
-        .subtitle { color: #7c98b6; margin-bottom: 30px; }
-        .section { margin-bottom: 30px; }
-        .section-title { font-weight: 600; font-size: 14px; color: #33475b; margin-bottom: 15px; }
-        .validation { background: #f5f8fa; padding: 15px; border-radius: 4px; margin-bottom: 20px; }
-        .validation-item { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 14px; }
-        .validation-item.pass { color: #00a4bd; }
-        .validation-item.fail { color: #f2545b; }
-        .validation-item.warn { color: #ff7a59; }
-        label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; color: #33475b; }
-        select, input { width: 100%; padding: 10px; border: 1px solid #cbd6e2; border-radius: 4px; font-size: 14px; }
-        select:focus, input:focus { outline: none; border-color: #00a4bd; }
-        .radio-group { display: flex; gap: 20px; margin-top: 6px; }
-        .radio-label { display: flex; align-items: center; gap: 6px; font-weight: normal; cursor: pointer; }
-        input[type="radio"] { width: auto; }
-        button { background: #00a4bd; color: white; border: none; padding: 12px 24px; border-radius: 4px; font-size: 14px; font-weight: 600; cursor: pointer; }
-        button:hover { background: #008da3; }
-        button:disabled { background: #cbd6e2; cursor: not-allowed; }
-        .alert { padding: 15px; border-radius: 4px; margin-top: 20px; font-size: 14px; }
-        .alert-error { background: #fee; color: #c00; border: 1px solid #fcc; }
-        .alert-success { background: #efe; color: #060; border: 1px solid #cfc; }
-        .alert-info { background: #e8f4f8; color: #00778b; border: 1px solid #b8e6f0; }
-        .preview { background: #f5f8fa; padding: 12px; border-radius: 4px; margin-top: 10px; font-family: monospace; font-size: 13px; color: #33475b; }
-        .loader { display: inline-block; width: 16px; height: 16px; border: 2px solid #fff; border-radius: 50%; border-top-color: transparent; animation: spin 0.6s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-    </style>
+  <meta charset="UTF-8">
+  <title>SPEX Deal Creator</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      padding: 20px;
+      margin: 0;
+      background: #f5f8fa;
+    }
+    .container { max-width: 800px; margin: 0 auto; }
+    .section {
+      background: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    h2 { margin-top: 0; color: #33475b; }
+    .validation-item {
+      display: flex;
+      align-items: center;
+      padding: 8px 0;
+    }
+    .validation-item .icon {
+      margin-right: 8px;
+      font-weight: bold;
+    }
+    .success { color: #00a886; }
+    .error { color: #f2545b; }
+    .warning { color: #ff7a59; }
+    .form-group { margin-bottom: 16px; }
+    label {
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 600;
+      color: #33475b;
+    }
+    select, input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #cbd6e2;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    button {
+      background: #0091ae;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:hover { background: #007a8c; }
+    button:disabled {
+      background: #cbd6e2;
+      cursor: not-allowed;
+    }
+    .alert {
+      padding: 12px;
+      border-radius: 4px;
+      margin-bottom: 16px;
+    }
+    .alert-error {
+      background: #fff3f3;
+      border: 1px solid #f2545b;
+      color: #c13a3f;
+    }
+    .alert-success {
+      background: #f0fdf8;
+      border: 1px solid #00a886;
+      color: #006d57;
+    }
+    .alert-info {
+      background: #f5f8fa;
+      border: 1px solid #0091ae;
+      color: #005e6f;
+    }
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #7c98b6;
+    }
+    .deal-preview {
+      font-weight: bold;
+      font-size: 16px;
+      color: #33475b;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>SPEX Deal Creator</h1>
-        <div class="subtitle">Create sponsorship deals with validation</div>
-
-        <div id="loading" style="text-align: center; padding: 40px;">
-            <div class="loader"></div>
-            <div style="margin-top: 10px;">Loading company data...</div>
-        </div>
-
-        <div id="app" style="display: none;">
-            <div class="section">
-                <div class="section-title">Company Validation</div>
-                <div class="validation" id="validation"></div>
-            </div>
-
-            <form id="dealForm">
-                <div class="section">
-                    <label>Event Area *</label>
-                    <select id="area" required>
-                        <option value="NYC">NYC</option>
-                        <option value="AMS">Amsterdam</option>
-                    </select>
-                </div>
-
-                <div class="section">
-                    <label>Event Year *</label>
-                    <select id="eventYear" required>
-                        <option value="2025">2025</option>
-                        <option value="2026">2026</option>
-                        <option value="2027">2027</option>
-                    </select>
-                </div>
-
-                <div class="section">
-                    <label>Deal Type *</label>
-                    <div class="radio-group">
-                        <label class="radio-label">
-                            <input type="radio" name="dealType" value="newbusiness" checked>
-                            New Business
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="dealType" value="existingbusiness">
-                            Existing Business
-                        </label>
-                    </div>
-                </div>
-
-                <div class="section">
-                    <label>Billing Contact *</label>
-                    <div id="contactsRadio"></div>
-                </div>
-
-                <div class="section">
-                    <label>Payment Method</label>
-                    <select id="paymentMethod"></select>
-                </div>
-
-                <div class="section">
-                    <label>Payment Term</label>
-                    <select id="paymentTerm">
-                        <option value="Immediately">Immediately</option>
-                        <option value="7 Days">7 Days</option>
-                        <option value="14 Days" selected>14 Days</option>
-                        <option value="30 Days">30 Days</option>
-                        <option value="60 Days">60 Days</option>
-                        <option value="120 Days">120 Days</option>
-                    </select>
-                </div>
-
-                <div class="section">
-                    <div class="alert alert-info">
-                        <strong>Deal Name Preview:</strong>
-                        <div class="preview" id="preview"></div>
-                    </div>
-                </div>
-
-                <button type="submit" id="submitBtn">Create Deal</button>
-            </form>
-
-            <div id="message"></div>
-        </div>
+  <div class="container">
+    <div id="app">
+      <div class="loading">Loading company data...</div>
     </div>
+  </div>
 
-    <script src="app.js"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script>
+    const { useState, useEffect } = React;
+
+    // HubSpot CRM Card SDK integration
+    let companyId = null;
+    let portalId = null;
+
+    // Get context from HubSpot iframe
+    if (window.location.search) {
+      const params = new URLSearchParams(window.location.search);
+      companyId = params.get('companyId') || params.get('associatedObjectId');
+      portalId = params.get('portalId');
+    }
+
+    const AREAS = {
+      NYC: { label: 'NYC', value: 'NYC', pipelineId: '384366810', stageId: '593899995' },
+      AMS: { label: 'Amsterdam', value: 'AMS', pipelineId: '262982359', stageId: '433706944' }
+    };
+
+    function App() {
+      const [loading, setLoading] = useState(true);
+      const [error, setError] = useState(null);
+      const [success, setSuccess] = useState(null);
+      const [companyData, setCompanyData] = useState(null);
+
+      // Form state
+      const [area, setArea] = useState('NYC');
+      const [eventYear, setEventYear] = useState('2025');
+      const [dealType, setDealType] = useState('newbusiness');
+      const [paymentMethod, setPaymentMethod] = useState('');
+      const [paymentTerm, setPaymentTerm] = useState('14 Days');
+      const [contactId, setContactId] = useState('');
+      const [submitting, setSubmitting] = useState(false);
+
+      useEffect(() => {
+        if (!companyId) {
+          setError('No company ID provided');
+          setLoading(false);
+          return;
+        }
+        loadData();
+      }, []);
+
+      async function loadData() {
+        try {
+          // In production, this would call your serverless function
+          // For now, show UI without data
+          setCompanyData({
+            company: {
+              name: 'Loading...',
+              id: companyId
+            },
+            contacts: [],
+            previousDeals: []
+          });
+          setLoading(false);
+        } catch (err) {
+          setError(err.message);
+          setLoading(false);
+        }
+      }
+
+      function generateDealName() {
+        const areaLabel = area === 'NYC' ? 'NYC' : 'Amsterdam';
+        const companyName = companyData?.company?.name || 'Company';
+        return `${companyName} - DPW ${areaLabel} ${eventYear}`;
+      }
+
+      async function handleSubmit(e) {
+        e.preventDefault();
+        setSubmitting(true);
+        setError(null);
+
+        try {
+          // Call your serverless function
+          const response = await fetch('/api/createDeal', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              companyId,
+              contactId,
+              dealName: generateDealName(),
+              area,
+              eventYear,
+              dealType,
+              paymentMethod,
+              paymentTerm,
+              pipelineId: AREAS[area].pipelineId,
+              stageId: AREAS[area].stageId
+            })
+          });
+
+          if (!response.ok) throw new Error('Failed to create deal');
+
+          setSuccess('Deal created successfully!');
+
+          // Notify parent window to refresh
+          if (window.parent) {
+            window.parent.postMessage({ type: 'REFRESH' }, '*');
+          }
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setSubmitting(false);
+        }
+      }
+
+      if (loading) {
+        return React.createElement('div', { className: 'loading' }, 'Loading company data...');
+      }
+
+      return React.createElement('div', null,
+        error && React.createElement('div', { className: 'alert alert-error' }, error),
+        success && React.createElement('div', { className: 'alert alert-success' }, success),
+
+        React.createElement('div', { className: 'section' },
+          React.createElement('h2', null, 'Create New Deal'),
+          React.createElement('form', { onSubmit: handleSubmit },
+
+            React.createElement('div', { className: 'form-group' },
+              React.createElement('label', null, 'Event Area *'),
+              React.createElement('select', {
+                value: area,
+                onChange: (e) => setArea(e.target.value),
+                required: true
+              },
+                React.createElement('option', { value: 'NYC' }, 'NYC'),
+                React.createElement('option', { value: 'AMS' }, 'Amsterdam')
+              )
+            ),
+
+            React.createElement('div', { className: 'form-group' },
+              React.createElement('label', null, 'Event Year *'),
+              React.createElement('select', {
+                value: eventYear,
+                onChange: (e) => setEventYear(e.target.value),
+                required: true
+              },
+                React.createElement('option', { value: '2025' }, '2025'),
+                React.createElement('option', { value: '2026' }, '2026'),
+                React.createElement('option', { value: '2027' }, '2027')
+              )
+            ),
+
+            React.createElement('div', { className: 'form-group' },
+              React.createElement('label', null, 'Deal Type *'),
+              React.createElement('select', {
+                value: dealType,
+                onChange: (e) => setDealType(e.target.value),
+                required: true
+              },
+                React.createElement('option', { value: 'newbusiness' }, 'New Business'),
+                React.createElement('option', { value: 'existingbusiness' }, 'Existing Business')
+              )
+            ),
+
+            React.createElement('div', { className: 'form-group' },
+              React.createElement('label', null, 'Payment Term'),
+              React.createElement('select', {
+                value: paymentTerm,
+                onChange: (e) => setPaymentTerm(e.target.value)
+              },
+                ['Immediately', '7 Days', '14 Days', '30 Days', '60 Days', '120 Days'].map(term =>
+                  React.createElement('option', { key: term, value: term }, term)
+                )
+              )
+            ),
+
+            React.createElement('div', { className: 'alert alert-info' },
+              React.createElement('div', { className: 'deal-preview' },
+                'Deal Name: ', generateDealName()
+              )
+            ),
+
+            React.createElement('button', {
+              type: 'submit',
+              disabled: submitting
+            }, submitting ? 'Creating...' : 'Create Deal')
+          )
+        )
+      );
+    }
+
+    ReactDOM.render(
+      React.createElement(App),
+      document.getElementById('app')
+    );
+  </script>
 </body>
 </html>
