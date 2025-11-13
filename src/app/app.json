@@ -8,16 +8,5 @@
     "crm.objects.deals.write",
     "crm.schemas.deals.read"
   ],
-  "public": false,
-  "extensions": {
-    "crm": {
-      "cards": [
-        {
-          "file": "./extensions/SpexDealCreator.js",
-          "location": "crm.record.tab",
-          "objectTypes": ["COMPANY"]
-        }
-      ]
-    }
-  }
+  "public": false
 }
